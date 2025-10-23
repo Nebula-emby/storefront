@@ -2,8 +2,17 @@
 
 import path from "path";
 
-const buildEslintCommand = (filenames) =>
-	`next lint --fix --file ${filenames.map((f) => path.relative(process.cwd(), f)).join(" --file ")}`;
+const buildEslintCommand = (filenames) => {
+	const files = filenames
+		.filter((file) => !path.basename(file).startsWith("."))
+		.map((file) => path.relative(process.cwd(), file));
+
+	if (!files.length) {
+		return 'echo "No ESLint-eligible files"';
+	}
+
+	return `next lint --fix --file ${files.join(" --file ")}`;
+};
 
 export default {
 	"*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}": [buildEslintCommand],

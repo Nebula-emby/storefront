@@ -37,3 +37,19 @@ interface JSON {
 interface Set<T> {
 	has(value: unknown): value is T;
 }
+
+declare module "qrcode" {
+	type QRCodeDataURLOptions = {
+		margin?: number;
+		width?: number;
+	};
+
+	function toDataURL(text: string, options?: QRCodeDataURLOptions): Promise<string>;
+
+	const qrcode: {
+		toDataURL: typeof toDataURL;
+	};
+
+	export { toDataURL, QRCodeDataURLOptions };
+	export default qrcode;
+}
